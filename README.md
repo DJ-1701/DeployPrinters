@@ -9,7 +9,7 @@ So I did. ;)
 
 Additional Features:
 
--Removes all shared printers before running through the XML (can be turned off by switching RASP to $false).
+-Removes all shared printers before running through the XML (can be turned on by switching RASP to $true and off by switching it to $false).
 
 -Can check to see if a root member of an OU or down a path and act accordingly.
 
