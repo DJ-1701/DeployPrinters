@@ -1,7 +1,7 @@
 ﻿# Unique ID of GPO with Printers listed.
 $GPOUID = "{01234567-89AB-CDEF-0123-456789ABCDEF}"
 # Remove All Shared Printers before reading GPO.
-$RASP = $true
+$RASP = $false
 
 $DomainName = (gwmi win32_computersystem).Domain
 $ShortDomainName = $DomainName.Split(".")[0]
