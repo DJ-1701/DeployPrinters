@@ -5,10 +5,10 @@ $RASP = $false
 
 $DomainName = (gwmi win32_computersystem).Domain
 $ShortDomainName = $DomainName.Split(".")[0]
-$ComputerDN = ([ADSISEARCHER]"(&(objectCategory=computer)(objectClass=computer)(cn=$env:COMPUTERNAME))").FindOne().Properties.distinguishedname
+$ComputerDN = ([ADSISEARCHER]"(&(objectCategory=computer)(objectClass=computer)(cn=$env:COMPUTERNAME))").FindOne().Properties.distinguishedname[0]
 $ComputerGroups = ([ADSISEARCHER]"(member:1.2.840.113556.1.4.1941:=$ComputerDN)").FindAll().GetEnumerator() | ForEach-Object {$_.Properties}
 $ComputerOU = $ComputerDN.substring(([string]$ComputerDN).IndexOf(",")+1)
-$UserDN = ([ADSISEARCHER]"samaccountname=$($env:Username)").FindOne().Properties.distinguishedname
+$UserDN = ([ADSISEARCHER]"samaccountname=$($env:Username)").FindOne().Properties.distinguishedname[0]
 $UserGroups = ([ADSISEARCHER]"(member:1.2.840.113556.1.4.1941:=$UserDN)").FindAll().GetEnumerator() | ForEach-Object {$_.Properties}
 $UserOU = $ComputerDN.substring(([string]$ComputerDN).IndexOf(",")+1)
 $NetObject = New-Object -ComObject WScript.Network
