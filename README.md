@@ -9,8 +9,6 @@ So I did. ;)
 
 Additional Features:
 
--Removes all shared printers before running through the XML (can be turned on by switching RASP to $true and off by switching it to $false).
-
--Can check to see if a root member of an OU or down a path and act accordingly.
-
+-Removes all shared printers before running through the XML (can be turned on by switching RASP to $true and off by switching it to $false).<br>
+-Can check to see if a root member of an OU or down a path and act accordingly.<br>
 -Checked Nested AD Groups for User and Computer entries.
