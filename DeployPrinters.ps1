@@ -264,7 +264,7 @@ ForEach ($PrinterObject in $ListOfPrinters.Printers.SharedPrinter)
                 $CachedP = $PrinterRecord.Filters.FilterComputer.name
                 # Check if name matches the computer name or fqdn.
                 # Do the following if only one of these conditions is true, 1) The name matches the computer name or fqdn 2) A Not operator is used.
-                If ((($PrinterRecord.Filters.FilterComputer.name -eq $env:COMPUTERNAME) -or ($PrinterRecord.Filters.FilterComputer.name -eq ($env:COMPUTERNAME+"."+$DomainName))) -xor ($PrinterRecord.Filters.FilterComputer.not -eq 1))
+                If ((($env:COMPUTERNAME -like $PrinterRecord.Filters.FilterComputer.name) -or (($env:COMPUTERNAME+"."+$DomainName) -like $PrinterRecord.Filters.FilterComputer.name)) -xor ($PrinterRecord.Filters.FilterComputer.not -eq 1))
                 {If ($PrinterRecord.Properties.action -eq "D") {. funcDeletePrinter} Else {. funcAddPrinter}}
             }
             Else
@@ -285,7 +285,7 @@ ForEach ($PrinterObject in $ListOfPrinters.Printers.SharedPrinter)
                         $LastLoopCorrect = 1
                     }
                     $CachedP = $PrinterRecord.Filters.FilterComputer[$i].name
-                    If ((($PrinterRecord.Filters.FilterComputer[$i].name -eq $env:COMPUTERNAME) -or ($PrinterRecord.Filters.FilterComputer[$i].name -eq ($env:COMPUTERNAME+"."+$DomainName))) -xor ($PrinterRecord.Filters.FilterComputer[$i].not -eq 1))
+                    If ((($env:COMPUTERNAME -like $PrinterRecord.Filters.FilterComputer[$i].name) -or (($env:COMPUTERNAME+"."+$DomainName) -like $PrinterRecord.Filters.FilterComputer[$i].name)) -xor ($PrinterRecord.Filters.FilterComputer[$i].not -eq 1))
                     {$LoopCorrect = 1} Else {$LoopCorrect = 0}
                     If ($CompareWithNextRecord -eq 0) {$LastLoopCorrect = $LoopCorrect}
                     If (($LastLoopCorrect -eq 1) -and ($LoopCorrect -eq 1)) {$SeriesCorrect = 1}
@@ -319,7 +319,7 @@ ForEach ($PrinterObject in $ListOfPrinters.Printers.SharedPrinter)
                 Else
                 {
                     # Do the following if only one of these conditions is true, 1) The username matches the currnet user, 2) A Not operator is used.
-                    If ((("$ShortDomainName\$env:Username") -eq $PrinterRecord.Filters.FilterUser.name) -xor ($PrinterRecord.Filters.FilterUser.not -eq 1))
+                    If ((("$ShortDomainName\$env:Username") -like $PrinterRecord.Filters.FilterUser.name) -xor ($PrinterRecord.Filters.FilterUser.not -eq 1))
                     {If ($PrinterRecord.Properties.action -eq "D") {. funcDeletePrinter} Else {. funcAddPrinter}}
                 }
             }
@@ -350,7 +350,7 @@ ForEach ($PrinterObject in $ListOfPrinters.Printers.SharedPrinter)
                     Else
                     {
                         # Do the following if only one of these conditions is true, 1) The username matches the currnet user, 2) A Not operator is used.
-                        If ((("$ShortDomainName\$env:Username") -eq $PrinterRecord.Filters.FilterUser[$i].name) -xor ($PrinterRecord.Filters.FilterUser[$i].not -eq 1))
+                        If ((("$ShortDomainName\$env:Username") -like $PrinterRecord.Filters.FilterUser[$i].name) -xor ($PrinterRecord.Filters.FilterUser[$i].not -eq 1))
                         {$LoopCorrect = 1} Else {$LoopCorrect = 0}
                     }
                     If ($CompareWithNextRecord -eq 0) {$LastLoopCorrect = $LoopCorrect}
