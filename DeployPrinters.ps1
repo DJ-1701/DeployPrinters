@@ -175,11 +175,11 @@ ForEach ($PrinterObject in $ListOfPrinters.Printers.SharedPrinter)
                     Else
                     {
                         # Do the following if only one of these conditions is true, 1) The object is in the Group, 2) A Not operator is used.
-                        If (((("$ShortDomainName\$GroupName") -eq $PrinterRecord.Filters.FilterGroup.samaccountname) -or (("$ShortDomainName\$GroupOldName") -eq $PrinterRecord.Filters.FilterGroup.samaccountname)) -and ($PrinterRecord.Filters.FilterGroup.not -eq 1))
+                        If (((("$ShortDomainName\$GroupName") -like $PrinterRecord.Filters.FilterGroup.samaccountname) -or (("$ShortDomainName\$GroupOldName") -like $PrinterRecord.Filters.FilterGroup.samaccountname)) -and ($PrinterRecord.Filters.FilterGroup.not -eq 1))
                         {
                             $Fail = 1
                         }
-                        ElseIf ((("$ShortDomainName\$GroupName") -eq $PrinterRecord.Filters.FilterGroup.samaccountname) -or (("$ShortDomainName\$GroupOldName") -eq $PrinterRecord.Filters.FilterGroup.samaccountname))
+                        ElseIf ((("$ShortDomainName\$GroupName") -like $PrinterRecord.Filters.FilterGroup.samaccountname) -or (("$ShortDomainName\$GroupOldName") -like $PrinterRecord.Filters.FilterGroup.samaccountname))
                         {
                             $Pass = 1
                         }
@@ -205,19 +205,19 @@ ForEach ($PrinterObject in $ListOfPrinters.Printers.SharedPrinter)
                         $LastLoopCorrect = 1
                     }
                     $CachedP = $PrinterRecord.Filters.FilterGroup[$i].name
-					$Pass = 0
-					$Fail = 0
-					# Check if we are comparing the User to a Group, or the Computer to a Group.
+                    $Pass = 0
+                    $Fail = 0
+                    # Check if we are comparing the User to a Group, or the Computer to a Group.
                     If ($PrinterRecord.Filters.FilterGroup[$i].userContext -eq 1) {$ListOfGroups = $UserGroups} Else {$ListOfGroups = $ComputerGroups}
-					ForEach ($GroupRecord in $ListOfGroups)
-					{
+                    ForEach ($GroupRecord in $ListOfGroups)
+                    {
                         $GroupName = $GroupRecord.name
                         $GroupOldName = $GroupRecord.samaccountname
-						If ($PrinterRecord.Filters.FilterGroup[$i].sid -ne $null)
-						{
-							$SID=(New-Object System.Security.Principal.SecurityIdentifier(([ADSISearcher]"(&(objectClass=Group)(cn=$GroupName))").FindOne().GetDirectoryEntry().ObjectSID.Value,0)).Value
-							# Do the following if only one of these conditions is true, 1) The object is in the Group, 2) A Not operator is used.
-							If (($SID -eq $PrinterRecord.Filters.FilterGroup[$i].sid) -and ($PrinterRecord.Filters.FilterGroup[$i].not -eq 1))
+                        If ($PrinterRecord.Filters.FilterGroup[$i].sid -ne $null)
+                        {
+                            $SID=(New-Object System.Security.Principal.SecurityIdentifier(([ADSISearcher]"(&(objectClass=Group)(cn=$GroupName))").FindOne().GetDirectoryEntry().ObjectSID.Value,0)).Value
+                            # Do the following if only one of these conditions is true, 1) The object is in the Group, 2) A Not operator is used.
+                            If (($SID -eq $PrinterRecord.Filters.FilterGroup[$i].sid) -and ($PrinterRecord.Filters.FilterGroup[$i].not -eq 1))
                             {
                                 $Fail = 1
                             }
@@ -225,21 +225,21 @@ ForEach ($PrinterObject in $ListOfPrinters.Printers.SharedPrinter)
                             {
                                 $Pass = 1
                             }
-						}
-						Else
-						{
-							# Do the following if only one of these conditions is true, 1) The object is in the Group, 2) A Not operator is used.
-							If (((("$ShortDomainName\$GroupName") -eq $PrinterRecord.Filters.FilterGroup[$i].samaccountname) -or (("$ShortDomainName\$GroupOldName") -eq $PrinterRecord.Filters.FilterGroup[$i].samaccountname)) -and ($PrinterRecord.Filters.FilterGroup[$i].not -eq 1))
+                        }
+                        Else
+                        {
+                            # Do the following if only one of these conditions is true, 1) The object is in the Group, 2) A Not operator is used.
+                            If (((("$ShortDomainName\$GroupName") -like $PrinterRecord.Filters.FilterGroup[$i].samaccountname) -or (("$ShortDomainName\$GroupOldName") -like $PrinterRecord.Filters.FilterGroup[$i].samaccountname)) -and ($PrinterRecord.Filters.FilterGroup[$i].not -eq 1))
                             {
                                 $Fail = 1
                             }
-                            ElseIf ((("$ShortDomainName\$GroupName") -eq $PrinterRecord.Filters.FilterGroup[$i].samaccountname) -or (("$ShortDomainName\$GroupOldName") -eq $PrinterRecord.Filters.FilterGroup[$i].samaccountname))
+                            ElseIf ((("$ShortDomainName\$GroupName") -like $PrinterRecord.Filters.FilterGroup[$i].samaccountname) -or (("$ShortDomainName\$GroupOldName") -like $PrinterRecord.Filters.FilterGroup[$i].samaccountname))
                             {
                                 $Pass = 1
                             }
-						}
-					}
-					If (($Pass -eq 1) -and ($Fail -eq 0)) {$LoopCorrect = 1} Else {$LoopCorrect = 0}
+                        }
+                    }
+                    If (($Pass -eq 1) -and ($Fail -eq 0)) {$LoopCorrect = 1} Else {$LoopCorrect = 0}
                     If ($CompareWithNextRecord -eq 0) {$LastLoopCorrect = $LoopCorrect}
                     If (($LastLoopCorrect -eq 1) -and ($LoopCorrect -eq 1)) {$SeriesCorrect = 1}
                     If ($LoopCorrect -eq 0) {$LastLoopCorrect = 0}
