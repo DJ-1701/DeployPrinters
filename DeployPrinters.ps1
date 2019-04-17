@@ -14,7 +14,19 @@ $UserOU = $ComputerDN.substring(([string]$ComputerDN).IndexOf(",")+1)
 $UserSID = (New-Object System.Security.Principal.SecurityIdentifier(([ADSISearcher]"(&(objectClass=User)(sAMAccountName=$env:Username))").FindOne().GetDirectoryEntry().ObjectSID.Value,0)).Value
 $NetObject = New-Object -ComObject WScript.Network
 
-[xml]$ListOfPrinters = Get-Content "\\$DomainName\SYSVOL\$DomainName\Policies\$GPOUID\User\Preferences\Printers\Printers.xml"
+If (Test-Path "\\$DomainName\SYSVOL\$DomainName\Policies\$GPOUID\User\Preferences\Printers\Printers.xml")
+{
+    [xml]$ListOfPrinters = Get-Content "\\$DomainName\SYSVOL\$DomainName\Policies\$GPOUID\User\Preferences\Printers\Printers.xml"
+}
+ElseIf (Test-Path "\\$ShortDomainName\SYSVOL\$DomainName\Policies\$GPOUID\User\Preferences\Printers\Printers.xml")
+{
+    [xml]$ListOfPrinters = Get-Content "\\$ShortDomainName\SYSVOL\$DomainName\Policies\$GPOUID\User\Preferences\Printers\Printers.xml"
+}
+Else
+{
+    Write-Host "Error... can't find path... please ensure you have the correct UID."
+    Break
+}
 
 function funcAddPrinter
 {
