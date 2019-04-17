@@ -11,7 +11,7 @@ $ComputerOU = $ComputerDN.substring(([string]$ComputerDN).IndexOf(",")+1)
 $UserDN = ([ADSISEARCHER]"samaccountname=$($env:Username)").FindOne().Properties.distinguishedname[0]
 $UserGroups = ([ADSISEARCHER]"(member:1.2.840.113556.1.4.1941:=$UserDN)").FindAll().GetEnumerator() | ForEach-Object {$_.Properties}
 $UserOU = $ComputerDN.substring(([string]$ComputerDN).IndexOf(",")+1)
-$UserSID = (New-Object System.Security.Principal.SecurityIdentifier(([ADSISearcher]"(&(objectClass=User)(cn=$env:Username))").FindOne().GetDirectoryEntry().ObjectSID.Value,0)).Value
+$UserSID = (New-Object System.Security.Principal.SecurityIdentifier(([ADSISearcher]"(&(objectClass=User)(sAMAccountName=$env:Username))").FindOne().GetDirectoryEntry().ObjectSID.Value,0)).Value
 $NetObject = New-Object -ComObject WScript.Network
 
 [xml]$ListOfPrinters = Get-Content "\\$DomainName\SYSVOL\$DomainName\Policies\$GPOUID\User\Preferences\Printers\Printers.xml"
