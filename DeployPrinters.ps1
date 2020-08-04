@@ -64,7 +64,7 @@ ForEach ($PrinterObject in $ListOfPrinters.Printers.SharedPrinter)
             {
                 $CachedP = $PrinterRecord.Filters.FilterOrgUnit.name
                 # Check if we are looking for a device in any OU under this branch, or if only looking for machines imediately in this OU (Direct Member).
-                If (($PrinterRecord.Filters.FilterOrgUnit.directMember -ne $NULL) -and ($PrinterRecord.Filters.FilterOrgUnit.directMember -ne 0))
+                If (($PrinterRecord.Filters.FilterOrgUnit.directMember -ne $NULL) -xor ($PrinterRecord.Filters.FilterOrgUnit.directMember -ne 0))
                 {
                     # Check if we are comparing the User account OU, or the Computer account OU.
                     If ($PrinterRecord.Filters.FilterOrgUnit.userContext -eq 1)
