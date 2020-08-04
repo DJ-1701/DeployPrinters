@@ -115,7 +115,7 @@ ForEach ($PrinterObject in $ListOfPrinters.Printers.SharedPrinter)
                         $LastLoopCorrect = 1
                     }
                     $CachedP = $PrinterRecord.Filters.FilterOrgUnit[$i].name
-                    If (($PrinterRecord.Filters.FilterOrgUnit[$i].directMember -ne $NULL) -and ($PrinterRecord.Filters.FilterOrgUnit[$i].directMember -ne 0))
+                    If (($PrinterRecord.Filters.FilterOrgUnit[$i].directMember -ne $NULL) -xor ($PrinterRecord.Filters.FilterOrgUnit[$i].directMember -ne 0))
                     {
                         If ($PrinterRecord.Filters.FilterOrgUnit[$i].userContext -eq 1)
                         {
