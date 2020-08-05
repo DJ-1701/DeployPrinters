@@ -14,5 +14,5 @@ Additional Features:
 -Checks AD Groups (including Nested) of the User and Computer to see if there is a Group match.<br>
 -Checks for Computer Name and User Name matches.
 
-Update:
+## Update:<br>
 My good friend and 'Coding Goddess' Katy has also made an excellent script for processing printers in Group Policy, you can check it out here. https://katynicholson.uk/2020/08/powershell-printer-script/
